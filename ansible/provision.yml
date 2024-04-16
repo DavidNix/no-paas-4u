@@ -1,9 +1,9 @@
 ---
-- name: Provisionning app server
+- name: Provisioning app server
   hosts: app
   strategy: free
   roles:
-#    - docker # Not using docker right now
+#    - docker # Not using docker or Kamal right now
     - packages
     - snap
     - ssh
