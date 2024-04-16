@@ -1,6 +1,6 @@
 # No PaaS 4U
 
-You don't need PaaS. Far cheaper to run your app on a [Hetzner](https://www.hetzner.com/cloud/) VM (<$5/mo).
+You don't need PaaS. Far cheaper to run your app on a [Hetzner](https://www.hetzner.com/cloud/) VM (~$5/mo).
 
 This is a template that you can clone and modify to your needs. It's very much a WIP. YMMV.
 
