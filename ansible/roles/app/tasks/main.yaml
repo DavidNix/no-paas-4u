@@ -1,0 +1,63 @@
+# Tasks for deploying a Go app
+---
+- name: Compile Go binary
+  environment:
+    CGO_ENABLED: '0'
+    GOOS: linux
+    GOARCH: amd64
+  command: go build -o {{ app_name }} ../..
+  delegate_to: localhost
+
+- name: Copy binary to server
+  synchronize:
+    src: "{{ app_name }}"
+    dest: "/usr/local/bin/{{ app_name }}"
+    mode: push
+
+- name: Set binary permissions
+  ansible.builtin.file:
+    path: "/usr/local/bin/{{ app_name }}"
+    mode: 0755
+
+- name: Create app directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0777
+  with_items:
+    - "{{ app_dir }}"
+
+- name: Ensure app works
+  command: "/usr/local/bin/{{ app_name }} version"
+
+- name: Include sensitive env vars
+  include_vars:
+    file: secrets.yml
+    name: env_vars
+
+- name: Create EnvironmentFile for systemd service
+  ansible.builtin.template:
+    src: env.j2
+    dest: "{{ app_dir }}/.env"
+
+- name: Create .envrc for running app locally
+  ansible.builtin.template:
+    src: envrc.j2
+    dest: "{{ app_dir }}/.envrc"
+
+- name: Ensure the systemd service directory exists
+  ansible.builtin.file:
+    path: /etc/systemd/system
+    state: directory
+
+- name: Deploy the systemd service template
+  ansible.builtin.template:
+    src: service.j2
+    dest: "/etc/systemd/system/{{ app_name }}.service"
+
+- name: Enable and restart the service
+  ansible.builtin.systemd:
+    name: "{{ app_name }}"
+    daemon_reload: true
+    enabled: true
+    state: restarted

@@ -1,0 +1,6 @@
+---
+- name: Deploying your app
+  hosts: app
+  strategy: free
+  roles:
+    - app

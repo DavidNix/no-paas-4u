@@ -1,0 +1,17 @@
+[Unit]
+Description={{ app_name }} service
+After=network.target
+
+[Service]
+Type=simple
+User={{ app_user }}
+Group={{ app_group }}
+Restart=on-failure
+RestartSec=3
+
+WorkingDirectory={{ app_dir }}
+ExecStart=/usr/local/bin/{{ app_name }}
+EnvironmentFile={{ app_dir }}/.env
+
+[Install]
+WantedBy=multi-user.target

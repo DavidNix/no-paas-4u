@@ -1,0 +1,19 @@
+---
+- name: Include reboot role
+  include_role:
+    name: reboot
+
+- name: Configure floating IP
+  ansible.builtin.blockinfile:
+    path: /etc/netplan/60-floating-ip.yaml
+    create: yes
+    block: |
+      network:
+        version: 2
+        renderer: networkd
+        ethernets:
+          eth0:
+            addresses:
+              - {{ floating_ip_address }}/32
+  notify:
+    - reboot server

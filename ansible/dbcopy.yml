@@ -1,0 +1,10 @@
+---
+- name: Copying prod db to local
+  hosts: app
+  strategy: free
+  tasks:
+    - name: Copying db
+      fetch:
+        src: /changeme/prod.db
+        dest: ../../
+        flat: yes

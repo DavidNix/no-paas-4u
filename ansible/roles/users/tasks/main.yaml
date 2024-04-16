@@ -1,0 +1,10 @@
+- name: Create app user
+  ansible.builtin.user:
+    name: "{{ app_user }}"
+    system: yes
+    create_home: no
+
+- name: Create app group
+  ansible.builtin.group:
+    name: "{{ app_group }}"
+    system: yes

@@ -1,0 +1,35 @@
+---
+- name: Upgrade packages
+  apt:
+    update_cache: yes
+    upgrade: yes
+
+- name: Install packages
+  apt:
+    name:
+      - apt-transport-https
+      - build-essential
+      - ca-certificates
+      - curl
+      - fail2ban
+      - git
+      - gnupg
+      - htop
+      - ntp
+      - ufw
+      - unattended-upgrades
+      - vim
+      - python3-pip
+      - direnv
+      - traceroute
+      - sqlite3
+    state: latest
+    update_cache: yes
+    autoremove: yes
+    autoclean: yes
+  notify:
+    - start ntp
+    - start fail2ban
+
+- name: Install poetry
+  command: pip install poetry==1.7.1

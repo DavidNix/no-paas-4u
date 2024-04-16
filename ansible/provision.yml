@@ -1,0 +1,13 @@
+---
+- name: Provisionning app server
+  hosts: app
+  strategy: free
+  roles:
+#    - docker # Not using docker right now
+    - packages
+    - snap
+    - ssh
+    - firewall
+    - net
+    - users
+#    - traefik # Not using Kamal right now
